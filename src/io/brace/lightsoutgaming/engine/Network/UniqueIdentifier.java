@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * used for anything that needs unique identification, but mostly ServerClients.
+ * @author Taz40
+ *
+ */
+
 public class UniqueIdentifier {
 
 	private static List<Integer> ids = new ArrayList<Integer>();
@@ -20,6 +26,11 @@ public class UniqueIdentifier {
 	
 	private UniqueIdentifier(){
 	}
+	
+	/**
+	 * @return
+	 * a unique ID.
+	 */
 	
 	public static int getIdentifier(){
 		if(index > ids.size()-1){

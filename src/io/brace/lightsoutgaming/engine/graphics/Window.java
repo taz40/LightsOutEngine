@@ -7,12 +7,27 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+/**
+ * is used to interface with the JFrame window in a more user friendly way.
+ * @author Taz40
+ *
+ */
+
 public class Window extends Canvas {
 	
 	private JFrame frame;
 	private int width, height;
 	private String title;
 	
+	/**
+	 * creates a window.
+	 * @param title
+	 * the title of the window.
+	 * @param width
+	 * the width of the window.
+	 * @param height
+	 * the height of the window.
+	 */
 	public Window(String title, int width, int height){
 		this.title = title;
 		this.width = width;
@@ -31,10 +46,20 @@ public class Window extends Canvas {
 		frame.addMouseListener(new Mouse());
 		frame.setVisible(true);
 	}
+	
+	/**
+	 * @return
+	 * the width of the window.
+	 */
 
 	public int getWidth(){
 		return width;
 	}
+	
+	/**
+	 * @return
+	 * the height of the window.
+	 */
 	
 	public int getHeight(){
 		return height;

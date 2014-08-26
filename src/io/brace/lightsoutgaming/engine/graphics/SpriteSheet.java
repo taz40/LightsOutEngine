@@ -5,15 +5,44 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * is used to load sprite sheets into the game.
+ * @author Taz40
+ *
+ */
+
 public class SpriteSheet {
-	public int width, height;
+	/**
+	 * the width of the sprite sheet.
+	 */
+	public int width;
+	/**
+	 * the height of the sprite sheet.
+	 */
+	public int height;
+	/**
+	 * the path of the sprite sheet's file.
+	 */
 	private String path;
+	/**
+	 * the pixel data of the sprite sheet.
+	 */
 	public int[] pixels;
+	
+	/**
+	 * creates a sprite sheet form a path
+	 * @param path
+	 * the file path of the sprite sheet.
+	 */
 	
 	public SpriteSheet(String path){
 		this.path = path;
 		load();
 	}
+	
+	/**
+	 * loads a sprite sheet's file to memory for use.
+	 */
 	
 	public void load(){
 		try {

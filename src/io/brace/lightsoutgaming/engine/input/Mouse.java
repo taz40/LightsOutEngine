@@ -1,11 +1,26 @@
 package io.brace.lightsoutgaming.engine.input;
 
 import java.awt.event.MouseEvent;
+
+/**
+ * used to track mouse pos, and button state.
+ * 
+ * @author Taz40
+ */
 import java.awt.event.MouseListener;
 
 public class Mouse implements MouseListener{
-
-	public static int mouseX, mouseY;
+	/**
+	 * the X position of the mouse.
+	 */
+	public static int mouseX;
+	/**
+	 * the Y position of the mouse.
+	 */
+	public static int mouseY;
+	/**
+	 * the currently clicked mouse button.
+	 */
 	public static int button;
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
@@ -32,6 +47,8 @@ public class Mouse implements MouseListener{
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		button = 0;
+		mouseX = arg0.getX();
+		mouseY = arg0.getY();
 	}
 	
 }

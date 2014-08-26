@@ -22,7 +22,7 @@ public class Main extends LightsOut {
 	}
 
 	@Override
-	protected void render() {
+	protected void render(){
 		
 	}
 

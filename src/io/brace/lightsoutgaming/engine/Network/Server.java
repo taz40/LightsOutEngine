@@ -7,19 +7,35 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+/**
+ * used to start a server.
+ * @author Taz40
+ *
+ */
+
 public class Server implements Runnable {
 	
-	DatagramSocket socket;
-	Thread recv;
-	Thread manage;
-	boolean single;
-	int port;
-	Thread run;
-	public boolean running = false;
-	public final String Game_ID;
-	ArrayList<ServerClient> clients = new ArrayList<ServerClient>();
-	ArrayList<Integer> responses = new ArrayList<Integer>();
-	public static final int MAX_ATTEMPTS = 5;
+	private DatagramSocket socket;
+	private Thread recv;
+	private Thread manage;
+	private boolean single;
+	private int port;
+	private Thread run;
+	private boolean running = false;
+	private final String Game_ID;
+	private ArrayList<ServerClient> clients = new ArrayList<ServerClient>();
+	private ArrayList<Integer> responses = new ArrayList<Integer>();
+	private static final int MAX_ATTEMPTS = 5;
+	
+	/**
+	 * creates a server.
+	 * @param single
+	 * if the server is being used for single player or not.
+	 * @param port
+	 * the port to run the server on.
+	 * @param Game_ID
+	 * the game id. must be the same as the one used on client side. otherwise it will not connect.
+	 */
 	
 	public Server(boolean single, int port, String Game_ID){
 		this.Game_ID = Game_ID;
@@ -67,14 +83,14 @@ public class Server implements Runnable {
 		send.start();
 	}
 	
-	public void sendToAll(String msg){
+	private void sendToAll(String msg){
 		for(int i = 0; i < clients.size(); i++){
 			ServerClient c = clients.get(i);
 			send(msg, c.ip, c.port);
 		}
 	}
 	
-	public void recvThread(){
+	private void recvThread(){
 		recv = new Thread("recv"){
 			public void run(){
 				while(running){
@@ -110,7 +126,7 @@ public class Server implements Runnable {
 		recv.start();
 	}
 	
-	public void manage(){
+	private void manage(){
 		manage = new Thread("Client Management"){
 			public void run(){
 				while(running){
@@ -138,7 +154,7 @@ public class Server implements Runnable {
 		manage.start();
 	}
 	
-	public void dissconnect(ServerClient client, boolean soft){
+	private void dissconnect(ServerClient client, boolean soft){
 		clients.remove(client);
 		if(soft){
 			System.out.println(client.name + " dissconnected");
@@ -146,6 +162,10 @@ public class Server implements Runnable {
 			System.out.println(client.name + " Timed Out");
 		}
 	}
+	
+	/**
+	 * DO NOT USE! for use with Threading ONLY!
+	 */
 
 	@Override
 	public void run() {

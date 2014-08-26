@@ -10,7 +10,20 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+/**
+ * a bunch of utilities used for networking.
+ * @author Taz40
+ *
+ */
+
 public class NetworkUtils {
+	/**
+	 * listens for a message on the specified socket.
+	 * @param socket
+	 * the socket to listen on.
+	 * @return
+	 * the message.
+	 */
 	public static String recv(DatagramSocket socket){
 		byte[] data = new byte[1024];
 		DatagramPacket packet = new DatagramPacket(data, data.length);
@@ -26,9 +39,21 @@ public class NetworkUtils {
 		return message.split("/e/")[0];
 	}
 	
-	public static void send(final String s, final InetAddress ip, final int port, final DatagramSocket socket){
+	/**
+	 * sends a message through the specified socket to the specified ip and port.
+	 * @param msg
+	 * the message to send.
+	 * @param ip
+	 * the ip to send it to.
+	 * @param port
+	 * the port to send it to.
+	 * @param socket
+	 * the socket to send it on.
+	 */
+	
+	public static void send(final String msg, final InetAddress ip, final int port, final DatagramSocket socket){
 		Thread send = new Thread("Send"){
-		final String string = s + "/e/";
+		final String string = msg + "/e/";
 			public void run(){
 				DatagramPacket packet = new DatagramPacket(string.getBytes(), string.getBytes().length, ip, port);
 				try {
@@ -42,6 +67,12 @@ public class NetworkUtils {
 		send.start();
 	}
 	
+	/**
+	 * initializes the network for use.
+	 * @return
+	 * the Datagram Socket for network communication.
+	 */
+	
 	public static DatagramSocket NetInit(){
 		DatagramSocket socket;
 		try {
@@ -51,6 +82,22 @@ public class NetworkUtils {
 		}
 		return socket;
 	}
+	
+	/**
+	 * connects to a server
+	 * @param ip
+	 * the ip of the server.
+	 * @param port
+	 * the port of the server.
+	 * @param name
+	 * the name of the player connecting.
+	 * @param Game_ID
+	 * a string identifying the game. must be the same as the one used on the server side.
+	 * @param socket
+	 * the socket to use to connect.
+	 * @return
+	 * the id of the player. returns -1 if connection was unsuccessful.
+	 */
 	
 	public static int connect(String ip, int port,String name , String Game_ID, DatagramSocket socket){
 		try {
