@@ -52,16 +52,17 @@ public class NetworkUtils {
 		return socket;
 	}
 	
-	public static boolean connect(String ip, int port,String name , String Game_ID, DatagramSocket socket){
+	public static int connect(String ip, int port,String name , String Game_ID, DatagramSocket socket){
 		try {
 			send("/c/"+name+"/"+Game_ID, InetAddress.getByName(ip), port, socket);
 		} catch (UnknownHostException e) {
-			return false;
+			return -1;
 		}
 		String response = recv(socket);
 		if(response.equals("false")){
-			return  false;
+			return  -1;
 		}
-		return true;
+		String[] info = response.split("/c/");
+		return Integer.parseInt(info[1]);
 	}
 }

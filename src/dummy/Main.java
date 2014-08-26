@@ -10,6 +10,7 @@ import static io.brace.lightsoutgaming.engine.Network.NetworkUtils.*;
 public class Main extends LightsOut {
 	
 	DatagramSocket socket;
+	int ID;
 
 	public static void main(String[] args){
 		Main main = new Main();
@@ -38,9 +39,10 @@ public class Main extends LightsOut {
 				System.err.println("could not bind to port");
 				return;
 			}
-			boolean result = connect("localhost", 8080, "Taz40", "Test Dummy", socket);
-			if(result){
-				System.out.println("Success");
+			int result = connect("localhost", 8080, "Taz40", "Test Dummy", socket);
+			if(result != -1){
+				ID = result;
+				System.out.println("Connected with ID: " + ID);
 				createDisplay("Lights Out Engine 0.1 Network Test", 900, 600);
 				start();
 			}else{
