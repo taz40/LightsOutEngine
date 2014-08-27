@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import io.brace.lightsoutgaming.engine.LightsOut;
+import io.brace.lightsoutgaming.engine.input.Mouse;
 import static io.brace.lightsoutgaming.engine.Network.NetworkUtils.*;
 
 public class Main extends LightsOut {
@@ -28,26 +29,13 @@ public class Main extends LightsOut {
 
 	@Override
 	protected void update() {
-		
 	}
 
 	@Override
 	protected void init() {
 		// TODO Auto-generated method stub
-			socket = NetInit();
-			if(socket == null){
-				System.err.println("could not bind to port");
-				return;
-			}
-			int result = connect("localhost", 8080, "Taz40", "Test Dummy", socket);
-			if(result != -1){
-				ID = result;
-				System.out.println("Connected with ID: " + ID);
-				createDisplay("Lights Out Engine 0.1 Network Test", 900, 600);
-				start();
-			}else{
-				System.err.println("could not connect to server");
-			}
+		createDisplay("Lights Out Engine 0.1 Network Test", 900, 600);
+		start();
 	}
 	
 }

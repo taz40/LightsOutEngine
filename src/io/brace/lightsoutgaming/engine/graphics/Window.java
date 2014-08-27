@@ -39,11 +39,11 @@ public class Window extends Canvas {
 		this.setPreferredSize(new Dimension(width, height));
 		frame = new JFrame(title);
 		frame.setResizable(false);
+		this.addMouseListener(new Mouse());
 		frame.add(this);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-		frame.addMouseListener(new Mouse());
 		frame.setVisible(true);
 	}
 	
