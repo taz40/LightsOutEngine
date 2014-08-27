@@ -1,14 +1,12 @@
 package io.brace.lightsoutgaming.engine.Network;
 
-import static io.brace.lightsoutgaming.engine.Network.NetworkUtils.recv;
-import static io.brace.lightsoutgaming.engine.Network.NetworkUtils.send;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 /**
  * a bunch of utilities used for networking.
@@ -17,6 +15,10 @@ import java.net.UnknownHostException;
  */
 
 public class NetworkUtils {
+	public static boolean running = false;
+	public static InetAddress serverIP;
+	public static int serverPort;
+	public static ArrayList<Networked> networkObjects = new ArrayList<Networked>();
 	/**
 	 * listens for a message on the specified socket.
 	 * @param socket
@@ -37,6 +39,20 @@ public class NetworkUtils {
 		}
 		String message = new String(packet.getData());
 		return message.split("/e/")[0];
+	}
+	
+	public static DatagramPacket recvp(DatagramSocket socket){
+		byte[] data = new byte[1024];
+		DatagramPacket packet = new DatagramPacket(data, data.length);
+		
+		try {
+			socket.setSoTimeout(1000);
+			socket.receive(packet);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
+		return packet;
 	}
 	
 	/**
@@ -81,6 +97,7 @@ public class NetworkUtils {
 			return null;
 		}
 		return socket;
+		
 	}
 	
 	/**
@@ -99,7 +116,7 @@ public class NetworkUtils {
 	 * the id of the player. returns -1 if connection was unsuccessful.
 	 */
 	
-	public static int connect(String ip, int port,String name , String Game_ID, DatagramSocket socket){
+	public static int connect(String ip, int port,String name , String Game_ID, final DatagramSocket socket){
 		try {
 			send("/c/"+name+"/"+Game_ID, InetAddress.getByName(ip), port, socket);
 		} catch (UnknownHostException e) {
@@ -109,7 +126,56 @@ public class NetworkUtils {
 		if(response.equals("false")){
 			return  -1;
 		}
+		try {
+			serverIP = InetAddress.getByName(ip);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		serverPort = port;
+		running = true;
 		String[] info = response.split("/c/");
-		return Integer.parseInt(info[1]);
+		final int id = Integer.parseInt(info[1]);
+		Thread netMan = new Thread("Network Manager"){
+			public void run(){
+				while(running){
+					DatagramPacket packet = recvp(socket);
+					String message;
+					if(packet != null){
+					message = new String(packet.getData());
+					String msg = message.split("/e/")[0];
+					if(msg.startsWith("/p/")){
+						send("/r/"+id, packet.getAddress(), packet.getPort(), socket);
+					}else if(msg.startsWith("/o/")){
+						String[] info = msg.split("/o/");
+						Class c = null;
+						try {
+							c = Class.forName(info[1]);
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if(Networked.class.isAssignableFrom(c)){
+							try {
+								networkObjects.add((Networked)c.newInstance());
+							} catch (InstantiationException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IllegalAccessException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+					}
+				}
+			}
+		};
+		netMan.start();
+		return id;
+	}
+	
+	public static void createObject(Class<?> c, InetAddress ip, int port, DatagramSocket s){
+		send("/o/"+c.getName(), ip, port, s);
 	}
 }

@@ -90,6 +90,14 @@ public class Server implements Runnable {
 		}
 	}
 	
+	private void sendToAllExcept(String msg, ServerClient client){
+		for(int i = 0; i < clients.size(); i++){
+			ServerClient c = clients.get(i);
+			if(c != client)
+			send(msg, c.ip, c.port);
+		}
+	}
+	
 	private void recvThread(){
 		recv = new Thread("recv"){
 			public void run(){
@@ -103,6 +111,7 @@ public class Server implements Runnable {
 						e.printStackTrace();
 					}
 					String msg = new String(packet.getData());
+					msg = msg.split("/e/")[0];
 					if(msg.startsWith("/c/")){
 						String[] info = msg.split("/");
 						String name = info[2];
@@ -118,12 +127,35 @@ public class Server implements Runnable {
 					}else if(msg.startsWith("/r/")){
 						String[] info = msg.split("/r/");
 						responses.add(Integer.parseInt(info[1]));
+					}else if(msg.startsWith("/d/")){
+						String[] info = msg.split("/d/");
+						dissconnect(findWithID(Integer.parseInt(info[1])), true);
+					}else if(msg.startsWith("/o/")){
+						sendToAllExcept(msg,findByIP(packet.getAddress(), packet.getPort()));
 					}else if(msg.equals("false")) continue;
 					else System.out.println("Unknown MSG received");
 				}
 			}
 		};
 		recv.start();
+	}
+	
+	public ServerClient findByIP(InetAddress ip, int port){
+		for(int i = 0; i < clients.size(); i++){
+			if(clients.get(i).ip.equals(ip) && clients.get(i).port == port){
+				return clients.get(i);
+			}
+		}
+		return null;
+	}
+	
+	public ServerClient findWithID(int ID){
+		for(int i = 0; i < clients.size(); i++){
+			if(clients.get(i).ID == ID){
+				return clients.get(i);
+			}
+		}
+		return null;
 	}
 	
 	private void manage(){
@@ -139,7 +171,7 @@ public class Server implements Runnable {
 					}
 					for(int i = 0; i < clients.size(); i++){
 						if(responses.contains(clients.get(i).ID)){
-							responses.remove(clients.get(i).ID);
+							responses.remove((Integer)clients.get(i).ID);
 							clients.get(i).attempts = 0;
 						}else{
 							clients.get(i).attempts++;

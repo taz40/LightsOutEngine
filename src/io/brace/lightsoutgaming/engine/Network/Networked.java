@@ -1,12 +1,14 @@
 package io.brace.lightsoutgaming.engine.Network;
 
+import io.brace.lightsoutgaming.engine.Entity;
+
 /**
  * is used to make an object networkable.
  * @author Taz40
  *
  */
 
-public interface Networked {
+public interface Networked extends Entity {
 	/**
 	 * is called when the game is ready to send the object data accross the network.
 	 * @return
