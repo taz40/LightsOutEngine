@@ -40,6 +40,7 @@ public class Window extends Canvas {
 		frame = new JFrame(title);
 		frame.setResizable(false);
 		this.addMouseListener(new Mouse());
+		this.addMouseMotionListener(new Mouse());
 		frame.add(this);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
