@@ -19,6 +19,7 @@ public class NetworkUtils {
 	public static InetAddress serverIP;
 	public static int serverPort;
 	public static ArrayList<Networked> networkObjects = new ArrayList<Networked>();
+	public static ArrayList<Networked> myObjects = new ArrayList<Networked>();
 	/**
 	 * listens for a message on the specified socket.
 	 * @param socket
@@ -147,23 +148,50 @@ public class NetworkUtils {
 					if(msg.startsWith("/p/")){
 						send("/r/"+id, packet.getAddress(), packet.getPort(), socket);
 					}else if(msg.startsWith("/o/")){
-						String[] info = msg.split("/o/");
+						String[] info = msg.split("/");
 						Class c = null;
 						try {
-							c = Class.forName(info[1]);
+							c = Class.forName(info[2]);
 						} catch (ClassNotFoundException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
 						if(Networked.class.isAssignableFrom(c)){
 							try {
-								networkObjects.add((Networked)c.newInstance());
-							} catch (InstantiationException e) {
+								Networked n = (Networked)c.newInstance();
+								n.classname = info[2];
+								n.ID = Integer.parseInt(info[3]);
+								networkObjects.add(n);
+							} catch (Exception e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (IllegalAccessException e) {
+							}
+						}
+					}else if(msg.startsWith("/oid/")){
+						String[] info = msg.split("/");
+						Class c = null;
+						try {
+							c = Class.forName(info[2]);
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+						}
+						if(Networked.class.isAssignableFrom(c)){
+							try {
+								Networked n = (Networked)c.newInstance();
+								n.classname = info[2];
+								n.ID = Integer.parseInt(info[3]);
+								myObjects.add(n);
+							} catch (Exception e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
+							}
+						}
+					}else if(msg.startsWith("/u/")){
+						String[] info = msg.split("/u/");
+						info = info[1].split("-/");
+						for(int i = 0; i < networkObjects.size(); i++){
+							Networked n = networkObjects.get(i);
+							if(n.ID == Integer.parseInt(info[0])){
+								String[] data = info[1].split("/");
+								n.recv(data);
+								break;
 							}
 						}
 					}
@@ -177,5 +205,14 @@ public class NetworkUtils {
 	
 	public static void createObject(Class<?> c, InetAddress ip, int port, DatagramSocket s){
 		send("/o/"+c.getName(), ip, port, s);
+	}
+	
+	public static void sendObject(Networked n, InetAddress ip, int port, DatagramSocket s){
+		String msg = "/u/" + n.ID + "-";
+		String[] data = n.send();
+		for(int i = 0; i < data.length; i++){
+			msg += "/" + data[i];
+		}
+		send(msg, ip, port, s);
 	}
 }

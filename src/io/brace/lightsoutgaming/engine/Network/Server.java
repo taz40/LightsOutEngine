@@ -25,6 +25,7 @@ public class Server implements Runnable {
 	private final String Game_ID;
 	private ArrayList<ServerClient> clients = new ArrayList<ServerClient>();
 	private ArrayList<Integer> responses = new ArrayList<Integer>();
+	private ArrayList<Networked> networkObjects = new ArrayList<Networked>();
 	private static final int MAX_ATTEMPTS = 5;
 	
 	/**
@@ -42,7 +43,7 @@ public class Server implements Runnable {
 		this.single = single;
 		this.port = port;
 		try {
-			socket = new DatagramSocket(port);
+			socket = new DatagramSocket(this.port);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,6 +122,9 @@ public class Server implements Runnable {
 							send("/c/"+id, packet.getAddress(), packet.getPort());
 							clients.add(new ServerClient(name, packet.getPort(), packet.getAddress(), id));
 							System.out.println(name + " connected");
+							for(int i = 0; i < networkObjects.size(); i++){
+								send("/o/"+networkObjects.get(i).classname, packet.getAddress(), packet.getPort());
+							}
 						}else{
 							System.out.println(name + " failed to connect");
 						}
@@ -131,7 +135,35 @@ public class Server implements Runnable {
 						String[] info = msg.split("/d/");
 						dissconnect(findWithID(Integer.parseInt(info[1])), true);
 					}else if(msg.startsWith("/o/")){
-						sendToAllExcept(msg,findByIP(packet.getAddress(), packet.getPort()));
+						int oid = UniqueIdentifier.getIdentifier();
+						ServerClient sender = findByIP(packet.getAddress(), packet.getPort());
+						String[] info = msg.split("/o/");
+						sendToAllExcept("/o/"+info[1]+"/"+oid, sender);
+						send("/oid/"+info[1]+"/"+oid, sender.ip, sender.port);
+						Class c = null;
+						System.out.println("received instantiate packet");
+						try {
+							c = Class.forName(info[1]);
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							System.out.println("can not find class");
+						}
+						if(Networked.class.isAssignableFrom(c)){
+							try {
+								Networked n = (Networked)c.newInstance();
+								n.classname = info[1];
+								n.ID = oid;
+								networkObjects.add(n);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								System.out.println("can not instantiate");
+							}
+						}
+					}else if(msg.startsWith("/u/")){
+						int oid = UniqueIdentifier.getIdentifier();
+						ServerClient sender = findByIP(packet.getAddress(), packet.getPort());
+						String[] info = msg.split("/o/");
+						sendToAllExcept(msg, sender);
 					}else if(msg.equals("false")) continue;
 					else System.out.println("Unknown MSG received");
 				}

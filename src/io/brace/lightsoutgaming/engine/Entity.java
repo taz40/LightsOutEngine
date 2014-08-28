@@ -2,9 +2,11 @@ package io.brace.lightsoutgaming.engine;
 
 import io.brace.lightsoutgaming.engine.graphics.Screen;
 
-public interface Entity {
+public abstract class Entity {
+	
+	protected int x, y;
 
-	public void update();
-	public void render(Screen s);
+	public abstract void update();
+	public abstract void render(Screen s);
 	
 }

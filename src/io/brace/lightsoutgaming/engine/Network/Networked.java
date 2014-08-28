@@ -8,18 +8,22 @@ import io.brace.lightsoutgaming.engine.Entity;
  *
  */
 
-public interface Networked extends Entity {
+public abstract class Networked extends Entity {
+	
+	int ID = -1;
+	public String classname;
+	
 	/**
 	 * is called when the game is ready to send the object data accross the network.
 	 * @return
 	 * the data to send.
 	 */
-	public String[] send();
+	public abstract String[] send();
 	/**
 	 * is called when the game receives object data from across the network.
 	 * @param data
 	 * the received data.
 	 */
-	public void recv(String[] data);
+	public abstract void recv(String[] data);
 
 }

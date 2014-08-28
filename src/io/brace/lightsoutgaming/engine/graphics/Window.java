@@ -1,5 +1,6 @@
 package io.brace.lightsoutgaming.engine.graphics;
 
+import io.brace.lightsoutgaming.engine.input.Keyboard;
 import io.brace.lightsoutgaming.engine.input.Mouse;
 
 import java.awt.Canvas;
@@ -41,6 +42,7 @@ public class Window extends Canvas {
 		frame.setResizable(false);
 		this.addMouseListener(new Mouse());
 		this.addMouseMotionListener(new Mouse());
+		this.addKeyListener(new Keyboard());
 		frame.add(this);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
