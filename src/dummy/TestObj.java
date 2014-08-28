@@ -17,11 +17,14 @@ public class TestObj extends Networked {
 		System.out.println(Keyboard.getKey(KeyEvent.VK_W));
 		if(Keyboard.getKey(KeyEvent.VK_W)){
 			y--;
-		}else if(Keyboard.getKey(KeyEvent.VK_S)){
+		}
+		if(Keyboard.getKey(KeyEvent.VK_S)){
 			y++;
-		}else if(Keyboard.getKey(KeyEvent.VK_A)){
+		}
+		if(Keyboard.getKey(KeyEvent.VK_A)){
 			x--;
-		}else if(Keyboard.getKey(KeyEvent.VK_D)){
+		}
+		if(Keyboard.getKey(KeyEvent.VK_D)){
 			x++;
 		}
 	}

@@ -10,13 +10,13 @@ public class Keyboard implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		keys[arg0.getID()] = true;
+		keys[arg0.getKeyCode()] = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		keys[arg0.getID()] = false;
+		keys[arg0.getKeyCode()] = false;
 		
 	}
 
