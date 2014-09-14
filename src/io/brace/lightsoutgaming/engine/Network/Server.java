@@ -122,6 +122,12 @@ public class Server implements Runnable {
 							send("/c/"+id, packet.getAddress(), packet.getPort());
 							clients.add(new ServerClient(name, packet.getPort(), packet.getAddress(), id));
 							System.out.println(name + " connected");
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							for(int i = 0; i < networkObjects.size(); i++){
 								send("/o/"+networkObjects.get(i).classname, packet.getAddress(), packet.getPort());
 							}

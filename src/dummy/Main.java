@@ -53,7 +53,7 @@ public class Main extends LightsOut {
 		socket = NetworkUtils.NetInit();
 		int id = NetworkUtils.connect("localhost", 8080, "Taz40", "Test Dummy", socket);
 		createDisplay("Lights Out Engine 0.1 Network Test", 900, 600);
-		//NetworkUtils.createObject(TestObj.class, serverIP, serverPort, socket);
+		NetworkUtils.createObject(TestObj.class, serverIP, serverPort, socket);
 		start();
 	}
 	

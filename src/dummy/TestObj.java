@@ -14,7 +14,6 @@ public class TestObj extends Networked {
 	public void update() {
 		// TODO Auto-generated method stub
 		angle += Math.toDegrees(0.1f);
-		System.out.println(Keyboard.getKey(KeyEvent.VK_W));
 		if(Keyboard.getKey(KeyEvent.VK_W)){
 			y--;
 		}
