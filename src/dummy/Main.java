@@ -28,6 +28,7 @@ public class Main extends LightsOut {
 
 	@Override
 	protected void render(){
+		screen.clear();
 		for(int i = 0; i < networkObjects.size(); i++){
 			networkObjects.get(i).render(screen);
 		}
@@ -50,6 +51,7 @@ public class Main extends LightsOut {
 	@Override
 	protected void init() {
 		// TODO Auto-generated method stub
+		
 		socket = NetworkUtils.NetInit();
 		int id = NetworkUtils.connect("localhost", 8080, "Taz40", "Test Dummy", socket);
 		createDisplay("Lights Out Engine 0.1 Network Test", 900, 600);

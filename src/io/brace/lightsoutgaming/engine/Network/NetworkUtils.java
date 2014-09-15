@@ -117,7 +117,7 @@ public class NetworkUtils {
 	 * the id of the player. returns -1 if connection was unsuccessful.
 	 */
 	
-	public static int connect(String ip, int port,String name , String Game_ID, final DatagramSocket socket){
+	public static int connect(final String ip, final int port,String name , String Game_ID, final DatagramSocket socket){
 		try {
 			send("/c/"+name+"/"+Game_ID, InetAddress.getByName(ip), port, socket);
 		} catch (UnknownHostException e) {
@@ -137,6 +137,17 @@ public class NetworkUtils {
 		running = true;
 		String[] info = response.split("/c/");
 		final int id = Integer.parseInt(info[1]);
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+	        public void run() {
+	            try {
+					send("/d/"+id, InetAddress.getByName(ip), port, socket);
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+	    }));
 		Thread netMan = new Thread("Network Manager"){
 			public void run(){
 				while(running){
@@ -191,6 +202,15 @@ public class NetworkUtils {
 							if(n.ID == Integer.parseInt(info[0])){
 								String[] data = info[1].split("/");
 								n.recv(data);
+								break;
+							}
+						}
+					}else if(msg.startsWith("/ro/")){
+						String[] info = msg.split("/ro/");
+						int rid = Integer.parseInt(info[1]);
+						for(int i = 0; i < networkObjects.size(); i++){
+							if(networkObjects.get(i).ID == rid){
+								networkObjects.remove(i);
 								break;
 							}
 						}

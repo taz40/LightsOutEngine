@@ -1,5 +1,6 @@
 package io.brace.lightsoutgaming.engine;
 
+import io.brace.lightsoutgaming.engine.Network.NetworkUtils;
 import io.brace.lightsoutgaming.engine.graphics.Display;
 import io.brace.lightsoutgaming.engine.graphics.Screen;
 import io.brace.lightsoutgaming.engine.graphics.Window;

@@ -129,7 +129,7 @@ public class Server implements Runnable {
 								e.printStackTrace();
 							}
 							for(int i = 0; i < networkObjects.size(); i++){
-								send("/o/"+networkObjects.get(i).classname, packet.getAddress(), packet.getPort());
+								send("/o/"+networkObjects.get(i).classname + "/" + networkObjects.get(i).ID, packet.getAddress(), packet.getPort());
 							}
 						}else{
 							System.out.println(name + " failed to connect");
@@ -159,6 +159,7 @@ public class Server implements Runnable {
 								Networked n = (Networked)c.newInstance();
 								n.classname = info[1];
 								n.ID = oid;
+								n.cratorid = sender.ID;
 								networkObjects.add(n);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
@@ -224,8 +225,18 @@ public class Server implements Runnable {
 		manage.start();
 	}
 	
+	private void removeNetworkObject(Networked n){
+		networkObjects.remove(n);
+		this.sendToAll("/ro/"+n.ID);
+	}
+	
 	private void dissconnect(ServerClient client, boolean soft){
 		clients.remove(client);
+		for(int i = 0; i < this.networkObjects.size(); i++){
+			if(networkObjects.get(i).cratorid == client.ID){
+				removeNetworkObject(networkObjects.get(i));
+			}
+		}
 		if(soft){
 			System.out.println(client.name + " dissconnected");
 		}else{
