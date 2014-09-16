@@ -65,8 +65,8 @@ public class Screen {
 	
 	public void renderSprite(int xp, int yp, Sprite sprite, boolean fixed){
 		if(fixed){
-			xp += xOffset;
-			yp += yOffset;
+			xp -= xOffset;
+			yp -= yOffset;
 		}
 		for(int x = 0; x < sprite.width; x++){
 			for(int y = 0; y < sprite.height; y++){

@@ -19,6 +19,7 @@ public class Server implements Runnable {
 	private Thread recv;
 	private Thread manage;
 	private boolean single;
+	private boolean singleconnect = false;
 	private int port;
 	private Thread run;
 	private boolean running = false;
@@ -114,6 +115,7 @@ public class Server implements Runnable {
 					String msg = new String(packet.getData());
 					msg = msg.split("/e/")[0];
 					if(msg.startsWith("/c/")){
+						if(!single || !singleconnect){
 						String[] info = msg.split("/");
 						String name = info[2];
 						String ID = info[3];
@@ -133,6 +135,10 @@ public class Server implements Runnable {
 							}
 						}else{
 							System.out.println(name + " failed to connect");
+						}
+						if(single){
+							singleconnect = true;
+						}
 						}
 					}else if(msg.startsWith("/r/")){
 						String[] info = msg.split("/r/");

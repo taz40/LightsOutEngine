@@ -171,6 +171,7 @@ public class NetworkUtils {
 								Networked n = (Networked)c.newInstance();
 								n.classname = info[2];
 								n.ID = Integer.parseInt(info[3]);
+								n.ismine = false;
 								networkObjects.add(n);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
@@ -189,6 +190,7 @@ public class NetworkUtils {
 								Networked n = (Networked)c.newInstance();
 								n.classname = info[2];
 								n.ID = Integer.parseInt(info[3]);
+								n.ismine = true;
 								myObjects.add(n);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block

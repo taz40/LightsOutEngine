@@ -13,6 +13,7 @@ public abstract class Networked extends Entity {
 	int ID = -1;
 	public String classname;
 	int cratorid;
+	boolean ismine;
 	
 	/**
 	 * is called when the game is ready to send the object data accross the network.
