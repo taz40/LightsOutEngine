@@ -31,6 +31,16 @@ public abstract class LightsOut implements Runnable {
 		loop.start();
 	}
 	
+	public final void stop(){
+		running = false;
+		try {
+			loop.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Creates the java window and sets up for display.
 	 * should be called before start()

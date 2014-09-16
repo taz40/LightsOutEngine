@@ -1,5 +1,7 @@
 package io.brace.lightsoutgaming.engine.Network;
 
+import io.brace.lightsoutgaming.engine.LightsOut;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -117,7 +119,7 @@ public class NetworkUtils {
 	 * the id of the player. returns -1 if connection was unsuccessful.
 	 */
 	
-	public static int connect(final String ip, final int port,String name , String Game_ID, final DatagramSocket socket){
+	public static int connect(final String ip, final int port,String name , String Game_ID, final DatagramSocket socket, final LightsOut mainclass){
 		try {
 			send("/c/"+name+"/"+Game_ID, InetAddress.getByName(ip), port, socket);
 		} catch (UnknownHostException e) {
@@ -142,6 +144,8 @@ public class NetworkUtils {
 	        public void run() {
 	            try {
 					send("/d/"+id, InetAddress.getByName(ip), port, socket);
+					mainclass.stop();
+					running = false;
 				} catch (UnknownHostException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
