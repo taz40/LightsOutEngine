@@ -17,6 +17,7 @@ public class Server implements Runnable {
 	
 	private DatagramSocket socket;
 	private Thread recv;
+	private Thread console;
 	private Thread manage;
 	private boolean single;
 	private boolean singleconnect = false;
@@ -183,6 +184,13 @@ public class Server implements Runnable {
 			}
 		};
 		recv.start();
+		console = new Thread("recv"){
+			public void run(){
+				while(running){
+					
+				}
+			}
+		};
 	}
 	
 	public ServerClient findByIP(InetAddress ip, int port){
