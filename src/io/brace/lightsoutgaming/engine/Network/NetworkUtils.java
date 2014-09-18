@@ -22,6 +22,7 @@ public class NetworkUtils {
 	public static int serverPort;
 	public static ArrayList<Networked> networkObjects = new ArrayList<Networked>();
 	public static ArrayList<Networked> myObjects = new ArrayList<Networked>();
+	static Thread stop;
 	/**
 	 * listens for a message on the specified socket.
 	 * @param socket
@@ -139,6 +140,13 @@ public class NetworkUtils {
 		running = true;
 		String[] info = response.split("/c/");
 		final int id = Integer.parseInt(info[1]);
+		stop = new Thread(new Runnable() {
+
+	        public void run() {
+	            mainclass.stop();
+				running = false;
+	        }
+	    });
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 
 	        public void run() {
@@ -220,6 +228,8 @@ public class NetworkUtils {
 								break;
 							}
 						}
+					}else if(msg.startsWith("/s/")){
+						stop.start();
 					}
 					}
 				}

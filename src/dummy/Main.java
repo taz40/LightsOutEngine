@@ -3,7 +3,6 @@ package dummy;
 import static io.brace.lightsoutgaming.engine.Network.NetworkUtils.*;
 import io.brace.lightsoutgaming.engine.LightsOut;
 import io.brace.lightsoutgaming.engine.Network.NetworkUtils;
-import io.brace.lightsoutgaming.engine.Network.Server;
 import io.brace.lightsoutgaming.engine.graphics.Sprite;
 import io.brace.lightsoutgaming.engine.graphics.SpriteSheet;
 
@@ -53,7 +52,7 @@ public class Main extends LightsOut {
 		// TODO Auto-generated method stub
 		
 		socket = NetworkUtils.NetInit();
-		int id = NetworkUtils.connect("localhost", 8080, "Taz40", "Test Dummy", socket);
+		int id = NetworkUtils.connect("localhost", 8080, "Taz40", "Test Dummy", socket, this);
 		createDisplay("Lights Out Engine 0.1 Network Test", 900, 600);
 		NetworkUtils.createObject(TestObj.class, serverIP, serverPort, socket);
 		start();

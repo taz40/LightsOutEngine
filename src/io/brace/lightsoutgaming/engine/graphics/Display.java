@@ -77,5 +77,10 @@ public class Display extends Canvas{
 		g.dispose();
 		bs.show();
 	}
+
+	public void dispose() {
+		// TODO Auto-generated method stub
+		window.dispose();
+	}
 	
 }

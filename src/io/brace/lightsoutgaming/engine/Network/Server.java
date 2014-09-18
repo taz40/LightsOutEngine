@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * used to start a server.
@@ -107,14 +108,18 @@ public class Server implements Runnable {
 				while(running){
 					byte[] data = new byte[1024];
 					DatagramPacket packet = new DatagramPacket(data, data.length);
+					String msg = "null";
 					try {
+						socket.setSoTimeout(1000);
 						socket.receive(packet);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						msg = "false";
 					}
-					String msg = new String(packet.getData());
-					msg = msg.split("/e/")[0];
+					if(!msg.equals("false")){
+						String message = new String(packet.getData());
+						msg = message.split("/e/")[0];
+					}
 					if(msg.startsWith("/c/")){
 						if(!single || !singleconnect){
 						String[] info = msg.split("/");
@@ -184,13 +189,20 @@ public class Server implements Runnable {
 			}
 		};
 		recv.start();
-		console = new Thread("recv"){
+		console = new Thread("console cmd"){
 			public void run(){
+				Scanner s = new Scanner(System.in);
 				while(running){
-					
+					String cmd = s.nextLine();
+					if(cmd.equals("stop")){
+						running = false;
+						//sendToAll("/s/");
+						break;
+					}
 				}
 			}
 		};
+		console.start();
 	}
 	
 	public ServerClient findByIP(InetAddress ip, int port){

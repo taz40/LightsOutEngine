@@ -68,4 +68,9 @@ public class Window extends Canvas {
 	public int getHeight(){
 		return height;
 	}
+
+	public void dispose() {
+		// TODO Auto-generated method stub
+		System.exit(0);
+	}
 }
