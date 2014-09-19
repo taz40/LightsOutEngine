@@ -26,7 +26,7 @@ public class Server implements Runnable {
 	private Thread run;
 	private boolean running = false;
 	private final String Game_ID;
-	private ArrayList<ServerClient> clients = new ArrayList<ServerClient>();
+	public ArrayList<ServerClient> clients = new ArrayList<ServerClient>();
 	private ArrayList<Integer> responses = new ArrayList<Integer>();
 	private ArrayList<Networked> networkObjects = new ArrayList<Networked>();
 	private static final int MAX_ATTEMPTS = 5;
