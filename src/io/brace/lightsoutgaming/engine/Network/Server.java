@@ -185,6 +185,7 @@ public class Server implements Runnable {
 						sendToAllExcept(msg, sender);
 					}else if(msg.equals("false")) continue;
 					else System.out.println("Unknown MSG received");
+					System.out.println(networkObjects.size());
 				}
 			}
 		};
@@ -196,6 +197,14 @@ public class Server implements Runnable {
 					String cmd = s.nextLine();
 					if(cmd.equals("stop")){
 						running = false;
+						try {
+							manage.join();
+							recv.join();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
 						//sendToAll("/s/");
 						break;
 					}

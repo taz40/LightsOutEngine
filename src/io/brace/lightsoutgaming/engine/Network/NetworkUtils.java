@@ -239,8 +239,9 @@ public class NetworkUtils {
 		return id;
 	}
 	
-	public static void createObject(Class<?> c, InetAddress ip, int port, DatagramSocket s){
+	public static int createObject(Class<?> c, InetAddress ip, int port, DatagramSocket s){
 		send("/o/"+c.getName(), ip, port, s);
+		return myObjects.size();
 	}
 	
 	public static void sendObject(Networked n, InetAddress ip, int port, DatagramSocket s){
