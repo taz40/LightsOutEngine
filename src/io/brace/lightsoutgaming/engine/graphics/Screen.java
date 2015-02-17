@@ -1,5 +1,8 @@
 package io.brace.lightsoutgaming.engine.graphics;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -75,6 +78,34 @@ public class Screen {
 				if(col != 0xffff00ff) pixels[(xp+x) + (yp+y) * width] = col;
 			}
 		}
+	}
+	
+	public void renderString(int xp, int yp, String txt, boolean fixed){
+		renderString(xp, yp, txt, image.getGraphics().getFont(), fixed);
+	}
+	
+	public void renderString(int xp, int yp, String txt,Font font, boolean fixed){
+		renderSprite(xp, yp, stringToSprite(txt, font), fixed);
+	}
+	
+	public Font getFont(){
+		return image.getGraphics().getFont();
+	}
+	
+	Sprite stringToSprite(String txt, Font font){
+		FontMetrics metrics = image.getGraphics().getFontMetrics(font);
+		int height = metrics.getHeight();
+		int width = metrics.stringWidth(txt);
+		Sprite s = new Sprite(width+2,height+2);
+		BufferedImage img = new BufferedImage(width+2, height+2, BufferedImage.TYPE_INT_RGB);
+		Graphics g = img.getGraphics();
+		g.setColor(java.awt.Color.decode("0xff00ff"));
+		g.fillRect(0, 0, width+2, height+2);
+		g.setFont(font);
+		g.setColor(java.awt.Color.BLACK);
+		g.drawString(txt, 2, height-2);
+		s.pixels = img.getRGB(0, 0, width+2, height+2, null, 0, width+2);
+		return s;
 	}
 	
 	/**

@@ -1,11 +1,10 @@
 package dummy;
 
-import static io.brace.lightsoutgaming.engine.Network.NetworkUtils.*;
 import io.brace.lightsoutgaming.engine.LightsOut;
-import io.brace.lightsoutgaming.engine.Network.NetworkUtils;
 import io.brace.lightsoutgaming.engine.graphics.Sprite;
 import io.brace.lightsoutgaming.engine.graphics.SpriteSheet;
 
+import java.awt.Font;
 import java.net.DatagramSocket;
 
 public class Main extends LightsOut {
@@ -27,34 +26,20 @@ public class Main extends LightsOut {
 
 	@Override
 	protected void render(){
-		screen.clear();
-		for(int i = 0; i < networkObjects.size(); i++){
-			networkObjects.get(i).render(screen);
-		}
-		for(int i = 0; i < myObjects.size(); i++){
-			myObjects.get(i).render(screen);
-		}
+		screen.clear(0xffffff);
+		Font f = new Font(screen.getFont().getFontName(), Font.BOLD, 20);
+		screen.renderString(10, 10, "Hello World!", f, true);
 		show();
 	}
 
 	@Override
 	protected void update() {
-		for(int i = 0; i < myObjects.size(); i++){
-			myObjects.get(i).update();
-		}
-		for(int i = 0; i < myObjects.size(); i++){
-			sendObject(myObjects.get(i), serverIP, serverPort, socket);
-		}
 	}
 
 	@Override
 	protected void init() {
 		// TODO Auto-generated method stub
-		
-		socket = NetworkUtils.NetInit();
-		int id = NetworkUtils.connect("localhost", 8080, "Taz40", "Test Dummy", socket, this);
-		createDisplay("Lights Out Engine 0.1 Network Test", 900, 600);
-		NetworkUtils.createObject(TestObj.class, serverIP, serverPort, socket);
+		createDisplay("Lights Out Engine 0.1 String Test", 900, 600);
 		start();
 	}
 	
