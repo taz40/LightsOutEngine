@@ -80,19 +80,19 @@ public class Screen {
 		}
 	}
 	
-	public void renderString(int xp, int yp, String txt, boolean fixed){
-		renderString(xp, yp, txt, image.getGraphics().getFont(), fixed);
+	public void renderString(int xp, int yp, String txt, java.awt.Color c, boolean fixed){
+		renderString(xp, yp, txt, c, image.getGraphics().getFont(), fixed);
 	}
 	
-	public void renderString(int xp, int yp, String txt,Font font, boolean fixed){
-		renderSprite(xp, yp, stringToSprite(txt, font), fixed);
+	public void renderString(int xp, int yp, String txt, java.awt.Color c, Font font, boolean fixed){
+		renderSprite(xp, yp, stringToSprite(txt, font, c), fixed);
 	}
 	
 	public Font getFont(){
 		return image.getGraphics().getFont();
 	}
 	
-	Sprite stringToSprite(String txt, Font font){
+	Sprite stringToSprite(String txt, Font font, java.awt.Color c){
 		FontMetrics metrics = image.getGraphics().getFontMetrics(font);
 		int height = metrics.getHeight();
 		int width = metrics.stringWidth(txt);
@@ -102,7 +102,7 @@ public class Screen {
 		g.setColor(java.awt.Color.decode("0xff00ff"));
 		g.fillRect(0, 0, width+2, height+2);
 		g.setFont(font);
-		g.setColor(java.awt.Color.BLACK);
+		g.setColor(c);
 		g.drawString(txt, 2, height-2);
 		s.pixels = img.getRGB(0, 0, width+2, height+2, null, 0, width+2);
 		return s;

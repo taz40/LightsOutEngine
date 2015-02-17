@@ -4,6 +4,7 @@ import io.brace.lightsoutgaming.engine.LightsOut;
 import io.brace.lightsoutgaming.engine.graphics.Sprite;
 import io.brace.lightsoutgaming.engine.graphics.SpriteSheet;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.net.DatagramSocket;
 
@@ -28,7 +29,7 @@ public class Main extends LightsOut {
 	protected void render(){
 		screen.clear(0xffffff);
 		Font f = new Font(screen.getFont().getFontName(), Font.BOLD, 20);
-		screen.renderString(10, 10, "Hello World!", f, true);
+		screen.renderString(10, 10, "Hello World!", Color.BLUE, f, true);
 		show();
 	}
 
