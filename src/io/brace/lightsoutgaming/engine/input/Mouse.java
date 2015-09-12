@@ -60,7 +60,8 @@ public class Mouse implements MouseListener, MouseMotionListener{
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+		mouseX = arg0.getX();
+		mouseY = arg0.getY();
 	}
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
